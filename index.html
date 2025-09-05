@@ -1,0 +1,59 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Happy Birthday!</title>
+  <meta name="theme-color" content="#8b5cf6" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    body{margin:0;height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;font-family:Poppins,sans-serif;background:linear-gradient(120deg,#60a5fa,#8b5cf6);overflow:hidden;padding:20px;box-sizing:border-box}
+    h1{font-size:clamp(28px,5vw,48px);color:#fff;text-shadow:0 4px 12px rgba(0,0,0,.3);animation:fadeIn 2s ease forwards;margin:0}
+    h2{font-size:clamp(20px,4vw,28px);color:#fef3c7;margin:10px 0 20px;font-weight:600;animation:fadeIn 2.4s ease forwards}
+    p{font-size:clamp(16px,3vw,20px);color:#fff;max-width:700px;line-height:1.6;animation:fadeIn 3s ease forwards}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+    canvas{position:fixed;inset:0;pointer-events:none}
+  </style>
+</head>
+<body>
+  <h1>🎉 Happy 15th Birthday, <br> Isna! 🎂</h1>
+  <h2>Wishing you a day full of joy and surprises</h2>
+  <p>
+    Congratulations on turning 15! 🎈 May this special year bring you new adventures,
+    endless happiness, and beautiful memories. Keep shining, keep dreaming,
+    and never stop believing in yourself. Today is all about you — celebrate big!
+  </p><canvas id="confetti"></canvas>
+
+  <script>
+    var c=document.getElementById("confetti"),ctx=c.getContext("2d")
+    function resize(){c.width=innerWidth;c.height=innerHeight}
+    resize();addEventListener("resize",resize)
+
+    var confetti=[]
+    function spawn(n){
+      for(let i=0;i<n;i++){
+        confetti.push({x:Math.random()*c.width,y:Math.random()*c.height,r:4+Math.random()*6,vx:-2+Math.random()*4,vy:2+Math.random()*3,a:Math.random()*Math.PI*2,va:-0.05+Math.random()*0.1,color:`hsl(${Math.floor(Math.random()*360)} 90% 60%)`})
+      }
+    }
+
+    function step(){
+      ctx.clearRect(0,0,c.width,c.height)
+      for(let i=0;i<confetti.length;i++){
+        let p=confetti[i]
+        p.x+=p.vx;p.y+=p.vy;p.a+=p.va
+        if(p.y>c.height){p.y=-10;p.x=Math.random()*c.width}
+        ctx.save()
+        ctx.translate(p.x,p.y)
+        ctx.rotate(p.a)
+        ctx.fillStyle=p.color
+        ctx.fillRect(-p.r/2,-p.r/2,p.r,p.r*2)
+        ctx.restore()
+      }
+      requestAnimationFrame(step)
+    }
+
+    spawn(200)
+    step()
+  </script></body>
+</html>
